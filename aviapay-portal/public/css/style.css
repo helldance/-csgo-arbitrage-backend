@@ -83,4 +83,29 @@ nav.navbar-fixed {
     font-size: 14px;
     opacity: 0.8;
   }
+
+  .modal {
+    border-radius: 12px;
+    max-width: 700px;
+    padding: 20px;
+}
+
+.modal-content h5 {
+    font-weight: bold;
+}
+
+.input-field i {
+    color: #2196F3;
+}
+
+.modal-footer {
+    text-align: right;
+    padding: 15px;
+}
+
+.modal-footer .btn {
+    border-radius: 8px;
+    font-size: 16px;
+}
+
   

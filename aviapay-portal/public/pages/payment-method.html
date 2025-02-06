@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Method Management</title>
+    <link rel="stylesheet" href="../css/materialize.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h4>Payment Method Management</h4>
+
+        <!-- Search & Create Section -->
+        <div class="row">
+            <div class="input-field col s3">
+                <input type="text" id="payment-name">
+                <label for="payment-name">Payment Method Name</label>
+            </div>
+            <div class="input-field col s3">
+                <input type="text" id="payment-id">
+                <label for="payment-id">Payment ID</label>
+            </div>
+            <div class="input-field col s3">
+                <select id="payment-category">
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Card">Card</option>
+                    <option value="Wallet">Wallet</option>
+                    <option value="Crypto">Crypto</option>
+                    <option value="BNPL">BNPL</option>
+                </select>
+                <label>Category</label>
+            </div>
+            <div class="input-field col s3">
+                <button class="btn blue" onclick="searchPaymentMethods()">Search</button>
+                <button class="btn green modal-trigger" data-target="create-payment-modal">Create</button>
+            </div>
+        </div>
+
+        <!-- Payment Methods Table -->
+        <table class="highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Markets</th>
+                    <th>Direction</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="payment-table-body">
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Create Payment Modal -->
+<div id="create-payment-modal" class="modal">
+    <div class="modal-content">
+        <h5>Create New Payment Method</h5>
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col s6">
+                <div class="input-field">
+                    <i class="material-icons prefix">credit_card</i>
+                    <input type="text" id="new-payment-name">
+                    <label for="new-payment-name">Name</label>
+                </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">vpn_key</i>
+                    <input type="text" id="new-payment-id">
+                    <label for="new-payment-id">Payment ID</label>
+                </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">category</i>
+                    <select id="new-payment-category">
+                        <option value="Card">Card</option>
+                        <option value="Wallet">Wallet</option>
+                        <option value="Crypto">Crypto</option>
+                        <option value="BNPL">BNPL</option>
+                    </select>
+                    <label>Category</label>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col s6">
+                <div class="input-field">
+                    <i class="material-icons prefix">layers</i>
+                    <input type="text" id="new-payment-subcategory">
+                    <label for="new-payment-subcategory">Subcategory</label>
+                </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">public</i>
+                    <input type="text" id="new-payment-markets">
+                    <label for="new-payment-markets">Markets (comma-separated)</label>
+                </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">swap_horiz</i>
+                    <select id="new-payment-direction">
+                        <option value="in">Inbound</option>
+                        <option value="out">Outbound</option>
+                    </select>
+                    <label>Payment Direction</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn green" onclick="createPaymentMethod()">Save</button>
+    </div>
+</div>
+
+
+    <!-- Scripts -->
+    <script src="../js/materialize.min.js"></script>
+    <script src="../js/payment-method.js"></script>
+</body>
+</html>

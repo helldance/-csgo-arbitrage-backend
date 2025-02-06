@@ -86,53 +86,58 @@
                 <tbody id="channel-table-body"></tbody>
             </table>
 
-            <!-- Create Channel Modal -->
-            <!-- Create Channel Modal -->
-            <div id="create-channel-modal" class="modal">
-                <div class="modal-content">
-                <h5>Create New Channel</h5>
-            
-                <div class="input-field">
-                    <input type="text" id="new-channel-name">
-                    <label for="new-channel-name">Channel Name</label>
-                </div>
-                
-                <div class="input-field">
-                    <input type="text" id="new-channel-id">
-                    <label for="new-channel-id">Channel ID</label>
-                </div>
-            
-                <div class="input-field">
-                    <input type="text" id="new-channel-entity">
-                    <label for="new-channel-entity">Channel Entity</label>
-                </div>
-            
-                <div class="input-field">
-                    <select id="new-channel-status">
-                    <option value="Live">Live</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <label>Status</label>
-                </div>
-            
-                <!-- New: Country Dropdown -->
-                <div class="input-field">
-                    <select id="new-channel-country">
-                    <option value="" disabled selected>Select Country</option>
-                    <option value="Netherlands">Netherlands</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="United States">United States</option>
-                    <option value="Singapore">Singapore</option>
-                    <option value="Germany">Germany</option>
-                    </select>
-                    <label for="new-channel-country">Country</label>
-                </div>
-            
-                </div>
-                <div class="modal-footer">
-                <button class="btn blue" onclick="createChannel()">Save</button>
-                </div>
-            </div>
+<!-- Create Channel Modal -->
+<div id="create-channel-modal" class="modal custom-modal">
+    <div class="modal-content">
+      <h5 class="modal-title">Create New Channel</h5>
+  
+      <div class="input-field">
+        <i class="material-icons prefix">account_balance</i>
+        <input type="text" id="new-channel-name">
+        <label for="new-channel-name">Channel Name</label>
+      </div>
+  
+      <div class="input-field">
+        <i class="material-icons prefix">vpn_key</i>
+        <input type="text" id="new-channel-id">
+        <label for="new-channel-id">Channel ID</label>
+      </div>
+  
+      <div class="input-field">
+        <i class="material-icons prefix">business</i>
+        <input type="text" id="new-channel-entity">
+        <label for="new-channel-entity">Channel Entity</label>
+      </div>
+  
+      <div class="input-field">
+        <i class="material-icons prefix">sync</i>
+        <select id="new-channel-status">
+          <option value="Live">Live</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+        <label>Status</label>
+      </div>
+  
+      <div class="input-field">
+        <i class="material-icons prefix">public</i>
+        <select id="new-channel-country">
+          <option value="" disabled selected>Select Country</option>
+          <option value="Netherlands">Netherlands</option>
+          <option value="United Kingdom">United Kingdom</option>
+          <option value="United States">United States</option>
+          <option value="Singapore">Singapore</option>
+          <option value="Germany">Germany</option>
+        </select>
+        <label>Country</label>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+      <button class="btn waves-effect waves-light save-btn" onclick="createChannel()">Save</button>
+    </div>
+  </div>
+  
+  
   
         </div>
     </main>
