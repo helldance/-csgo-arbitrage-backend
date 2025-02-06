@@ -1,0 +1,76 @@
+<h4>Channel Management</h4>
+
+<!-- Search Area (Now Flexbox for Better Layout) -->
+<div class="row">
+  <div class="col s9">
+    <div class="row">
+      <div class="input-field col s4">
+        <input type="text" id="channel-name">
+        <label for="channel-name">Channel Name</label>
+      </div>
+      <div class="input-field col s4">
+        <input type="text" id="channel-id">
+        <label for="channel-id">Channel ID</label>
+      </div>
+      <div class="input-field col s4">
+        <select id="channel-type">
+          <option value="" disabled selected>Select Type</option>
+          <option value="card">Card</option>
+          <option value="bank">Bank</option>
+          <option value="wallet">Wallet</option>
+        </select>
+        <label>Channel Type</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Create Buttons (Aligned Right) -->
+  <div class="col s3 right-align">
+    <button class="btn waves-effect blue" onclick="searchChannels()">Search</button>
+    <button class="btn green modal-trigger" data-target="create-channel-modal">Create Channel</button>
+  </div>
+</div>
+
+<!-- Results Table -->
+<table class="highlight responsive-table">
+  <thead>
+    <tr>
+      <th>Channel Name</th>
+      <th>Channel ID</th>
+      <th>Channel Entity</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody id="channel-table-body"></tbody>
+</table>
+
+<!-- Create Channel Modal -->
+<div id="create-channel-modal" class="modal">
+  <div class="modal-content">
+    <h5>Create New Channel</h5>
+    <div class="input-field">
+      <input type="text" id="new-channel-name">
+      <label for="new-channel-name">Channel Name</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="new-channel-id">
+      <label for="new-channel-id">Channel ID</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="new-channel-entity">
+      <label for="new-channel-entity">Channel Entity</label>
+    </div>
+    <div class="input-field">
+      <select id="new-channel-status">
+        <option value="Live">Live</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+      <label>Status</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn blue" onclick="createChannel()">Save</button>
+  </div>
+</div>
+<!-- 
+<script src="js/channel.js" defer></script> -->
