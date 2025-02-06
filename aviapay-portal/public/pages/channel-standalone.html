@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel Management</title>
+    
+    <!-- Styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <ul id="slide-out" class="sidenav sidenav-fixed">
+        <li><div class="user-view">
+            <a href="../index.html"><span class="brand-logo">AviaPay</span></a>
+        </div></li>
+        <li><a href="../index.html"><i class="material-icons">dashboard</i> Dashboard</a></li>
+        <li><a href="channel.html"><i class="material-icons">swap_horiz</i> Router</a></li>
+        <li><a href="payment-method.html"><i class="material-icons">credit_card</i> Payment Method</a></li>
+        <li><a href="channel.html" class="active"><i class="material-icons">settings_input_component</i> Channel</a></li>
+        <li><a href="transaction.html"><i class="material-icons">receipt</i> Transaction</a></li>
+        <li><a href="payment-instrument.html"><i class="material-icons">account_balance_wallet</i> Payment Instrument</a></li>
+    </ul>
+
+    <!-- Main Content -->
+    <main>
+        <nav class="navbar-fixed blue lighten-2">
+            <div class="nav-wrapper">
+                <span class="page-title">Channel Management</span>
+                <ul class="right">
+                    <li><a href="#"><i class="material-icons">account_circle</i> John Doe</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h4>Channel Management</h4>
+
+            <!-- Search Area -->
+            <div class="row">
+                <div class="col s9">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input type="text" id="channel-name">
+                            <label for="channel-name">Channel Name</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input type="text" id="channel-id">
+                            <label for="channel-id">Channel ID</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <select id="channel-type">
+                                <option value="" disabled selected>Select Type</option>
+                                <option value="card">Card</option>
+                                <option value="bank">Bank</option>
+                                <option value="wallet">Wallet</option>
+                            </select>
+                            <label>Channel Type</label>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Search & Create Buttons (Aligned Right) -->
+            <div class="col s3 right-align" style="display: flex; justify-content: flex-end; gap: 10px; align-items: center;">
+                <button class="btn waves-effect blue" onclick="searchChannels()">Search</button>
+                <button class="btn green modal-trigger" data-target="create-channel-modal">Create</button>
+            </div>
+
+            </div>
+
+            <!-- Results Table -->
+            <table class="highlight responsive-table">
+                <thead>
+                    <tr>
+                        <th>Channel Name</th>
+                        <th>Channel ID</th>
+                        <th>Channel Entity</th>
+                        <th>Country</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="channel-table-body"></tbody>
+            </table>
+
+            <!-- Create Channel Modal -->
+            <!-- Create Channel Modal -->
+            <div id="create-channel-modal" class="modal">
+                <div class="modal-content">
+                <h5>Create New Channel</h5>
+            
+                <div class="input-field">
+                    <input type="text" id="new-channel-name">
+                    <label for="new-channel-name">Channel Name</label>
+                </div>
+                
+                <div class="input-field">
+                    <input type="text" id="new-channel-id">
+                    <label for="new-channel-id">Channel ID</label>
+                </div>
+            
+                <div class="input-field">
+                    <input type="text" id="new-channel-entity">
+                    <label for="new-channel-entity">Channel Entity</label>
+                </div>
+            
+                <div class="input-field">
+                    <select id="new-channel-status">
+                    <option value="Live">Live</option>
+                    <option value="Inactive">Inactive</option>
+                    </select>
+                    <label>Status</label>
+                </div>
+            
+                <!-- New: Country Dropdown -->
+                <div class="input-field">
+                    <select id="new-channel-country">
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="Germany">Germany</option>
+                    </select>
+                    <label for="new-channel-country">Country</label>
+                </div>
+            
+                </div>
+                <div class="modal-footer">
+                <button class="btn blue" onclick="createChannel()">Save</button>
+                </div>
+            </div>
+  
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../js/channel-standalone.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            M.AutoInit(); // Initialize Materialize components
+        });
+    </script>
+</body>
+</html>
