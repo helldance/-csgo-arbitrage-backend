@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel Router</title>
+    <link rel="stylesheet" href="../css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/materialize.min.js"></script>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="blue lighten-2">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">Channel Router</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h4>Routing Rules Management</h4>
+
+        <!-- Search Section -->
+        <div class="row">
+            <div class="input-field col s3">
+                <input type="text" id="search-ruleId">
+                <label for="search-ruleId">Rule ID</label>
+            </div>
+            <div class="input-field col s3">
+                <input type="text" id="search-merchantId">
+                <label for="search-merchantId">Merchant ID</label>
+            </div>
+            <div class="input-field col s3">
+                <select id="search-paymentMethodCategory">
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Card">Card</option>
+                    <option value="Wallet">Wallet</option>
+                    <option value="Crypto">Crypto</option>
+                </select>
+                <label>Payment Method Category</label>
+            </div>
+            <div class="input-field col s3">
+                <button class="btn blue waves-effect" onclick="searchRoutingRules()">Search</button>
+                <button class="btn green modal-trigger" data-target="create-rule-modal">Create Rule</button>
+            </div>
+        </div>
+
+        <!-- Routing Rules Table -->
+        <table class="highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>Rule ID</th>
+                    <th>Merchant ID</th>
+                    <th>Payment Category</th>
+                    <th>Country</th>
+                    <th>Currency</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="routing-rules-table"></tbody>
+        </table>
+    </div>
+
+    <!-- Routing Rule Details Drawer -->
+<div id="rule-details-drawer" class="rule-drawer">
+    <div class="drawer-header">
+        <h5 id="drawer-rule-id">Rule ID: </h5>
+        <button class="btn-small red" onclick="closeDrawer()">Close</button>
+    </div>
+    
+    <div class="drawer-content">
+        <h6>Conditions</h6>
+        <ul id="drawer-conditions" style="display: none;"></ul>
+        <table class="rule-table">
+            <tr>
+                <td><i class="material-icons">store</i> <strong>Merchant ID</strong></td>
+                <td>M001</td>
+            </tr>
+            <tr>
+                <td><i class="material-icons">payment</i> <strong>Payment Category</strong></td>
+                <td>Card</td>
+            </tr>
+            <tr>
+                <td><i class="material-icons">flag</i> <strong>Country</strong></td>
+                <td>US</td>
+            </tr>
+            <tr>
+                <td><i class="material-icons">attach_money</i> <strong>Currency</strong></td>
+                <td>USD</td>
+            </tr>
+        </table>
+        
+
+        <h6>Weighted Channels</h6>
+        <ul id="drawer-weighted-channels">
+        </ul>
+        <canvas id="channelChart"></canvas>
+        <div id="weightedBarContainer">
+            <div id="weightedBar"></div>
+        </div>
+    </div>
+
+    <div class="drawer-footer">
+        <button class="btn blue" onclick="editRule()">Edit Rule</button>
+    </div>
+</div>
+
+
+    <!-- Create Rule Modal -->
+    <div id="create-rule-modal" class="modal">
+        <div class="modal-content">
+            <h5>Create New Routing Rule</h5>
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col s6">
+                    <div class="input-field">
+                        <input type="text" id="new-rule-id">
+                        <label for="new-rule-id">Rule ID</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="new-merchant-id">
+                        <label for="new-merchant-id">Merchant ID</label>
+                    </div>
+                    <div class="input-field">
+                        <select id="new-payment-category">
+                            <option value="Card">Card</option>
+                            <option value="Wallet">Wallet</option>
+                            <option value="Crypto">Crypto</option>
+                        </select>
+                        <label>Payment Category</label>
+                    </div>
+                </div>
+                <!-- Right Column -->
+                <div class="col s6">
+                    <div class="input-field">
+                        <input type="text" id="new-country">
+                        <label for="new-country">Country</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="new-currency">
+                        <label for="new-currency">Currency</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="new-weighted-channels">
+                        <label for="new-weighted-channels">Weighted Channels (JSON Format)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn green" onclick="createRoutingRule()">Save</button>
+        </div>
+    </div>
+
+    <script src="../js/router.js"></script>
+</body>
+</html>

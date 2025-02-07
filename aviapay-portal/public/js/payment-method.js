@@ -68,4 +68,5 @@ function searchPaymentMethods() {
         </tr>`;
         tableBody.innerHTML += row;
     });
+    
 }
