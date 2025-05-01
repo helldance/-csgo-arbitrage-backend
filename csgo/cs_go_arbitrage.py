@@ -29,11 +29,11 @@ STEAM_API_TEMPLATE = "https://steamcommunity.com/market/priceoverview/?appid=730
 
 BUFF_GOODS_API = "https://buff.163.com/api/market/goods"
 BUFF_ITEM_PAGE_SIZE = 80
-MAX_PAGES = 3
+max_pages = None  # from caller
 
-BUFF_SELL_FEE = 0.025
-STEAM_SELL_FEE = 0.15
-USD_TO_RMB = 7.2
+buff_fee = None  # from caller
+steam_fee = None  # from caller
+exchange_rate = None  # from caller
 
 
 def load_buff_cookie():
@@ -92,11 +92,11 @@ def get_steam_lowest_price(market_hash_name):
     return None  # 3次失败后放弃
 
 
-def check_arbitrage_and_return(threshold: float = 0.15):
+def check_arbitrage_and_return(threshold: float, buff_fee: float, steam_fee: float, exchange_rate: float, max_pages: int):
     logger.info(f"开始套利计算，阈值：{threshold * 100:.1f}%")
     result = []
     try:
-        for page in range(1, MAX_PAGES + 1):
+        for page in range(1, max_pages + 1):
             goods = get_buff_goods(page)
             for item in goods:
                 name = item.get("market_hash_name")
@@ -114,8 +114,8 @@ def check_arbitrage_and_return(threshold: float = 0.15):
                 if not steam_price:
                     continue
 
-                steam_price_rmb = steam_price * USD_TO_RMB
-                steam_net = steam_price_rmb * (1 - STEAM_SELL_FEE)
+                steam_price_rmb = steam_price * exchange_rate
+                steam_net = steam_price_rmb * (1 - steam_fee)
 
                 # BUFF → Steam
                 if steam_net - buff_price > threshold * buff_price:
@@ -145,7 +145,7 @@ def check_arbitrage_and_return(threshold: float = 0.15):
                         "image": "https://steamcommunity-a.akamaihd.net/economy/image/class/730/0"
                     })
 
-                time.sleep(0.3)
+                time.sleep(0.5)
     except Exception as e:
         logger.exception(f"处理套利时异常: {e}")
     logger.info(f"套利完成，共发现 {len(result)} 项")

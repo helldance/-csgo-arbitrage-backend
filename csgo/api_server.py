@@ -16,6 +16,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class ArbitrageRequest(BaseModel):
+    threshold: float
+    buff_fee: float
+    steam_fee: float
+    exchange_rate: float
+    max_pages: int
+
 class ArbitrageItem(BaseModel):
     name: str
     strategy: str
@@ -24,6 +31,12 @@ class ArbitrageItem(BaseModel):
     profitRate: str
     image: str
 
-@app.get("/arbitrage", response_model=List[ArbitrageItem])
-def run_arbitrage(threshold: float = Query(15.0)):
-    return check_arbitrage_and_return(threshold)
+@app.post("/arbitrage", response_model=List[ArbitrageItem])
+def run_arbitrage(config: ArbitrageRequest):
+    return check_arbitrage_and_return(
+        threshold=config.threshold,
+        buff_fee=config.buff_fee,
+        steam_fee=config.steam_fee,
+        exchange_rate=config.exchange_rate,
+        max_pages=config.max_pages
+    )

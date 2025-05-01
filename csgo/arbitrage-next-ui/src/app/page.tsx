@@ -4,15 +4,29 @@ import { useState } from "react";
 
 export default function Home() {
   const [threshold, setThreshold] = useState(15);
+  const [maxPages, setMaxPages] = useState(3);
+  const [buffFee, setBuffFee] = useState(2.5); // %
+  const [steamFee, setSteamFee] = useState(15); // %
+  const [usdToRmb, setUsdToRmb] = useState(7.2);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleRun = async () => {
     setLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:8002/arbitrage?threshold=${threshold}`
-      );
+      const res = await fetch("http://localhost:8004/arbitrage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          threshold: threshold / 100,
+          max_pages: maxPages,
+          buff_fee: buffFee / 100,
+          steam_fee: steamFee / 100,
+          exchange_rate: usdToRmb,
+        }),
+      });
       const data = await res.json();
       setResults(data);
     } catch (e) {
@@ -27,18 +41,57 @@ export default function Home() {
       <div className="col-span-2">
         <div className="rounded-xl shadow border p-4 space-y-4">
           <h2 className="text-lg font-semibold">策略配置</h2>
-          <div>
-            <label className="block mb-1 text-sm text-gray-600">
-              套利利润阈值 (%)
-            </label>
+
+          <div className="grid gap-2">
+            <label className="text-sm">套利利润阈值 (%)</label>
             <input
               type="number"
               value={threshold}
               onChange={(e) => setThreshold(parseFloat(e.target.value))}
-              min={1}
               className="w-full border rounded px-3 py-2"
             />
           </div>
+
+          <div className="grid gap-2">
+            <label className="text-sm">BUFF 手续费 (%)</label>
+            <input
+              type="number"
+              value={buffFee}
+              onChange={(e) => setBuffFee(parseFloat(e.target.value))}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <label className="text-sm">Steam 手续费 (%)</label>
+            <input
+              type="number"
+              value={steamFee}
+              onChange={(e) => setSteamFee(parseFloat(e.target.value))}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <label className="text-sm">汇率（USD → RMB）</label>
+            <input
+              type="number"
+              value={usdToRmb}
+              onChange={(e) => setUsdToRmb(parseFloat(e.target.value))}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <label className="text-sm">BUFF 页面数量</label>
+            <input
+              type="number"
+              value={maxPages}
+              onChange={(e) => setMaxPages(parseInt(e.target.value))}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
           <button
             onClick={handleRun}
             disabled={loading}
