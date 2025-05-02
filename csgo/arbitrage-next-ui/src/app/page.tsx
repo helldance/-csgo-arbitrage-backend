@@ -14,7 +14,7 @@ export default function Home() {
   const handleRun = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8004/arbitrage", {
+      const res = await fetch("http://localhost:8005/arbitrage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

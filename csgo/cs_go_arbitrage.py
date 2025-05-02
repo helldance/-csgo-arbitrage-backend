@@ -122,13 +122,15 @@ def check_arbitrage_and_return(threshold: float, buff_fee: float, steam_fee: flo
                     profit = steam_net - buff_price
                     rate = profit / buff_price * 100
                     logger.info(f"套利机会 [BUFF→Steam] {name}: 利润率 {rate:.2f}%")
+
                     result.append({
                         "name": name,
                         "strategy": "BUFF → Steam",
                         "buffPrice": f"¥{buff_price:.2f}",
                         "steamPrice": f"${steam_price:.2f}",
                         "profitRate": f"{rate:.2f}%",
-                        "image": "https://steamcommunity-a.akamaihd.net/economy/image/class/730/0"
+                        "image": f"https://image.buff.163.com{item.get('goods_info', {}).get('icon_url', '')}"
+ 
                     })
 
                 # Steam → BUFF
@@ -144,8 +146,8 @@ def check_arbitrage_and_return(threshold: float, buff_fee: float, steam_fee: flo
                         "profitRate": f"{rate:.2f}%",
                         "image": "https://steamcommunity-a.akamaihd.net/economy/image/class/730/0"
                     })
-
-                time.sleep(0.5)
+                time.sleep(1.5 + random.uniform(0.3, 1.0))
+                
     except Exception as e:
         logger.exception(f"处理套利时异常: {e}")
     logger.info(f"套利完成，共发现 {len(result)} 项")
