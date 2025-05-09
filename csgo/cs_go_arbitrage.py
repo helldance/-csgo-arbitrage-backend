@@ -17,6 +17,20 @@ import json
 import logging
 from urllib.parse import quote
 
+def extract_exterior(name: str) -> str:
+    for level in ["Factory New", "Minimal Wear", "Field-Tested", "Well-Worn", "Battle-Scarred"]:
+        if level in name:
+            return level
+    return "Unknown"
+
+def parse_skin_attributes(name: str) -> dict:
+    return {
+        "exterior": extract_exterior(name),
+        "is_stattrak": "StatTrak" in name,
+        "is_souvenir": "Souvenir" in name,
+        "is_special": "★" in name,
+    }
+
 # 配置日志
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -29,11 +43,11 @@ STEAM_API_TEMPLATE = "https://steamcommunity.com/market/priceoverview/?appid=730
 
 BUFF_GOODS_API = "https://buff.163.com/api/market/goods"
 BUFF_ITEM_PAGE_SIZE = 80
-max_pages = None  # from caller
 
-buff_fee = None  # from caller
-steam_fee = None  # from caller
-exchange_rate = None  # from caller
+
+
+
+
 
 
 def load_buff_cookie():
@@ -122,15 +136,15 @@ def check_arbitrage_and_return(threshold: float, buff_fee: float, steam_fee: flo
                     profit = steam_net - buff_price
                     rate = profit / buff_price * 100
                     logger.info(f"套利机会 [BUFF→Steam] {name}: 利润率 {rate:.2f}%")
-
                     result.append({
                         "name": name,
+                    **parse_skin_attributes(name),
+                **parse_skin_attributes(name),
                         "strategy": "BUFF → Steam",
                         "buffPrice": f"¥{buff_price:.2f}",
                         "steamPrice": f"${steam_price:.2f}",
                         "profitRate": f"{rate:.2f}%",
                         "image": f"https://image.buff.163.com{item.get('goods_info', {}).get('icon_url', '')}"
- 
                     })
 
                 # Steam → BUFF
@@ -140,14 +154,16 @@ def check_arbitrage_and_return(threshold: float, buff_fee: float, steam_fee: flo
                     logger.info(f"套利机会 [Steam→BUFF] {name}: 利润率 {rate:.2f}%")
                     result.append({
                         "name": name,
+                    **parse_skin_attributes(name),
+                **parse_skin_attributes(name),
                         "strategy": "Steam → BUFF",
                         "buffPrice": f"¥{buff_price:.2f}",
                         "steamPrice": f"${steam_price:.2f}",
                         "profitRate": f"{rate:.2f}%",
-                        "image": "https://steamcommunity-a.akamaihd.net/economy/image/class/730/0"
+                        "image": f"https://image.buff.163.com{item.get('goods_info', {}).get('icon_url', '')}"
                     })
-                time.sleep(1.5 + random.uniform(0.3, 1.0))
-                
+
+                time.sleep(0.3)
     except Exception as e:
         logger.exception(f"处理套利时异常: {e}")
     logger.info(f"套利完成，共发现 {len(result)} 项")

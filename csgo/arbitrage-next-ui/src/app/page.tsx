@@ -11,6 +11,10 @@ export default function Home() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [filterStatTrak, setFilterStatTrak] = useState(false);
+  const [filterSouvenir, setFilterSouvenir] = useState(false);
+  const [filterSpecial, setFilterSpecial] = useState(false);
+
   const handleRun = async () => {
     setLoading(true);
     try {
@@ -28,7 +32,13 @@ export default function Home() {
         }),
       });
       const data = await res.json();
-      setResults(data);
+      const filtered = data.filter((item) => {
+        if (filterStatTrak && item.is_stattrak) return false;
+        if (filterSouvenir && item.is_souvenir) return false;
+        if (filterSpecial && item.is_special) return false;
+        return true;
+      });
+      setResults(filtered);
     } catch (e) {
       console.error("Fetch error:", e);
     } finally {
@@ -92,6 +102,13 @@ export default function Home() {
             />
           </div>
 
+          <div className="grid gap-2">
+            <label className="text-sm font-semibold">过滤选项</label>
+            <label><input type="checkbox" checked={filterStatTrak} onChange={(e) => setFilterStatTrak(e.target.checked)} /> 排除 StatTrak™</label>
+            <label><input type="checkbox" checked={filterSouvenir} onChange={(e) => setFilterSouvenir(e.target.checked)} /> 排除纪念皮</label>
+            <label><input type="checkbox" checked={filterSpecial} onChange={(e) => setFilterSpecial(e.target.checked)} /> 排除特殊皮（★）</label>
+          </div>
+
           <button
             onClick={handleRun}
             disabled={loading}
@@ -113,6 +130,7 @@ export default function Home() {
                 <th>BUFF价</th>
                 <th>Steam价</th>
                 <th>利润率</th>
+                <th>磨损</th>
                 <th>图片</th>
               </tr>
             </thead>
@@ -124,6 +142,7 @@ export default function Home() {
                   <td>{item.buffPrice}</td>
                   <td>{item.steamPrice}</td>
                   <td>{item.profitRate}</td>
+                  <td>{item.exterior}</td>
                   <td>
                     <img
                       src={item.image}
@@ -135,7 +154,7 @@ export default function Home() {
               ))}
               {results.length === 0 && !loading && (
                 <tr>
-                  <td colSpan={6} className="text-center py-4 text-gray-500">
+                  <td colSpan={7} className="text-center py-4 text-gray-500">
                     暂无套利机会
                   </td>
                 </tr>
