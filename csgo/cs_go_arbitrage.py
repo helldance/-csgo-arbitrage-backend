@@ -13,6 +13,7 @@
 
 import requests
 import time
+steam_price_cache = {}
 import json
 import logging
 from urllib.parse import quote
@@ -43,12 +44,6 @@ STEAM_API_TEMPLATE = "https://steamcommunity.com/market/priceoverview/?appid=730
 
 BUFF_GOODS_API = "https://buff.163.com/api/market/goods"
 BUFF_ITEM_PAGE_SIZE = 80
-
-
-
-
-
-
 
 def load_buff_cookie():
     try:
@@ -82,6 +77,9 @@ def get_buff_goods(page):
 import random
 
 def get_steam_lowest_price(market_hash_name):
+    if market_hash_name in steam_price_cache:
+        print(f"steam price from cache: s%", market_hash_name)
+        return steam_price_cache[market_hash_name]
     url = STEAM_API_TEMPLATE.format(quote(market_hash_name))
     for attempt in range(3):
         try:
@@ -91,7 +89,9 @@ def get_steam_lowest_price(market_hash_name):
                 if data.get("success") and data.get("lowest_price"):
                     price_str = data["lowest_price"].replace("$", "").replace(",", "")
                     logger.info(f"Steam 价格 [{market_hash_name}]: ${price_str}")
-                    return float(price_str)
+                    price = float(price_str)
+                    steam_price_cache[market_hash_name] = price
+                    return price
                 else:
                     logger.info(f"Steam 无最低价 [{market_hash_name}] 响应: {data}")
                     return None
