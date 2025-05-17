@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const [threshold, setThreshold] = useState(15);
@@ -8,40 +8,39 @@ export default function Home() {
   const [buffFee, setBuffFee] = useState(2.5);
   const [steamFee, setSteamFee] = useState(15);
   const [usdToRmb, setUsdToRmb] = useState(7.2);
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filterStatTrak, setFilterStatTrak] = useState(false);
   const [filterSouvenir, setFilterSouvenir] = useState(false);
   const [filterSpecial, setFilterSpecial] = useState(false);
 
-  const handleRun = () => {
-    setResults([]);
+  const handleRun = async () => {
     setLoading(true);
-    const ws = new WebSocket("ws://localhost:8009/arbitrage/ws");
-    ws.onopen = () => {
-      ws.send(
-        JSON.stringify({
+    try {
+      const res = await fetch("http://localhost:8006/arbitrage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           threshold: threshold / 100,
           max_pages: maxPages,
           buff_fee: buffFee / 100,
           steam_fee: steamFee / 100,
           exchange_rate: usdToRmb,
-        })
-      );
-    };
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (filterStatTrak && data.is_stattrak) return;
-      if (filterSouvenir && data.is_souvenir) return;
-      if (filterSpecial && data.is_special) return;
-      setResults((prev) => [...prev, data]);
-    };
-    ws.onclose = () => {
+        }),
+      });
+      const data = await res.json();
+      const filtered = data.filter((item) => {
+        if (filterStatTrak && item.is_stattrak) return false;
+        if (filterSouvenir && item.is_souvenir) return false;
+        if (filterSpecial && item.is_special) return false;
+        return true;
+      });
+      setResults(filtered);
+    } catch (e) {
+      console.error("Fetch error:", e);
+    } finally {
       setLoading(false);
-    };
-    ws.onerror = () => {
-      setLoading(false);
-    };
+    }
   };
 
   return (
