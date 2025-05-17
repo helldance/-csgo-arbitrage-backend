@@ -17,7 +17,9 @@ export default function Home() {
   const handleRun = () => {
     setResults([]);
     setLoading(true);
-    const ws = new WebSocket("ws://localhost:8009/arbitrage/ws");
+    // local 
+    // const ws = new WebSocket("ws://localhost:8009/arbitrage/ws");
+    const ws = new WebSocket("wss://cs-go-arb.onrender.com/arbitrage/ws");
     ws.onopen = () => {
       ws.send(
         JSON.stringify({
