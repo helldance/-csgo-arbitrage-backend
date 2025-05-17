@@ -29,7 +29,7 @@ export default function Home() {
         }),
       });
       const data = await res.json();
-      const filtered = data.filter((item) => {
+      const filtered = data.filter((item: any) => {
         if (filterStatTrak && item.is_stattrak) return false;
         if (filterSouvenir && item.is_souvenir) return false;
         if (filterSpecial && item.is_special) return false;
