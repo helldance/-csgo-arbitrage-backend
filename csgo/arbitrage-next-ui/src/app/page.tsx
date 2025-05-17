@@ -1,6 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+interface ArbitrageItem {
+  name: string;
+  strategy: string;
+  buffPrice: string;
+  steamPrice: string;
+  profitRate: string;
+  image: string;
+  exterior: string;
+  is_stattrak: boolean;
+  is_souvenir: boolean;
+  is_special: boolean;
+}
 
 export default function Home() {
   const [threshold, setThreshold] = useState(15);
@@ -8,7 +21,8 @@ export default function Home() {
   const [buffFee, setBuffFee] = useState(2.5);
   const [steamFee, setSteamFee] = useState(15);
   const [usdToRmb, setUsdToRmb] = useState(7.2);
-  const [results, setResults] = useState<any[]>([]);
+  const [minUsd, setMinUsd] = useState(1);
+  const [results, setResults] = useState<ArbitrageItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [filterStatTrak, setFilterStatTrak] = useState(false);
   const [filterSouvenir, setFilterSouvenir] = useState(false);
@@ -17,8 +31,6 @@ export default function Home() {
   const handleRun = () => {
     setResults([]);
     setLoading(true);
-    // local 
-    // const ws = new WebSocket("ws://localhost:8009/arbitrage/ws");
     const ws = new WebSocket("wss://cs-go-arb.onrender.com/arbitrage/ws");
     ws.onopen = () => {
       ws.send(
@@ -28,11 +40,12 @@ export default function Home() {
           buff_fee: buffFee / 100,
           steam_fee: steamFee / 100,
           exchange_rate: usdToRmb,
+          min_usd: minUsd
         })
       );
     };
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      const data: ArbitrageItem = JSON.parse(event.data);
       if (filterStatTrak && data.is_stattrak) return;
       if (filterSouvenir && data.is_souvenir) return;
       if (filterSpecial && data.is_special) return;
@@ -87,6 +100,16 @@ export default function Home() {
             type="number"
             value={usdToRmb}
             onChange={(e) => setUsdToRmb(parseFloat(e.target.value))}
+            className="w-full border rounded px-3 py-2"
+          />
+        </div>
+
+        <div className="grid gap-2">
+          <label className="text-sm">最小价格 (USD)</label>
+          <input
+            type="number"
+            value={minUsd}
+            onChange={(e) => setMinUsd(parseFloat(e.target.value))}
             className="w-full border rounded px-3 py-2"
           />
         </div>
