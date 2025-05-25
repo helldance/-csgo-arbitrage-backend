@@ -24,6 +24,7 @@ async def arbitrage_ws(websocket: WebSocket):
         buff_fee = config.get("buff_fee", 0.025)
         steam_fee = config.get("steam_fee", 0.15)
         exchange_rate = config.get("exchange_rate", 7.2)
+        min_usd = config.get("min_usd", 0.0)
         max_pages = config.get("max_pages", 3)
 
         cookies = load_buff_cookie()
@@ -41,7 +42,7 @@ async def arbitrage_ws(websocket: WebSocket):
                     continue
 
                 steam_price = get_steam_lowest_price(name)
-                if not steam_price:
+                if not steam_price or steam_price < min_usd:
                     continue
 
                 steam_price_rmb = steam_price * exchange_rate
